@@ -1,9 +1,14 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const Dotenv = require("dotenv-webpack");
+const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
-	entry: path.join(__dirname, "src/views", "Home.js"),
+	entry: {
+		home: path.join(__dirname, "src/views/Home.js"),
+	},
 	output: {
+		filename: "[name].bundle.js",
 		path: path.resolve(__dirname, "dist"),
 	},
 	mode: "development",
@@ -20,18 +25,22 @@ module.exports = {
 				},
 			},
 			{
-				test: /\.(png|jp(e*)g|svg|gif)$/,
+				test: /\.(png|jp(e*)g|gif|svg)$/,
 				use: ["file-loader"],
-			},
-			{
-				test: /\.svg$/,
-				use: ["@svgr/webpack"],
 			},
 		],
 	},
 	plugins: [
 		new HtmlWebpackPlugin({
-			template: path.join(__dirname, "src/html", "index.html"),
+			chunks: ["home"],
+			template: path.join(__dirname, "src/html/index.html"),
+			filename: "index.html",
+		}),
+		new CopyPlugin({
+			patterns: [{ from: path.resolve(__dirname, "public") }],
+		}),
+		new Dotenv({
+			systemvars: true,
 		}),
 	],
 };
