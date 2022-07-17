@@ -4,8 +4,12 @@ const Dotenv = require("dotenv-webpack");
 const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
+	devServer: {
+		port: 9000,
+	},
 	entry: {
 		home: path.join(__dirname, "src/views/Home.js"),
+		items: path.join(__dirname, "src/views/Home.js"),
 	},
 	output: {
 		filename: "[name].bundle.js",
@@ -35,6 +39,11 @@ module.exports = {
 			chunks: ["home"],
 			template: path.join(__dirname, "src/html/index.html"),
 			filename: "index.html",
+		}),
+		new HtmlWebpackPlugin({
+			chunks: ["items"],
+			template: path.join(__dirname, "src/html/items.html"),
+			filename: "items/index.html",
 		}),
 		new CopyPlugin({
 			patterns: [{ from: path.resolve(__dirname, "public") }],
