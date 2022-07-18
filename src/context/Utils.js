@@ -13,9 +13,9 @@ export const fetchItems = async (text = "ipod", limit = "4") => {
 	}
 };
 
-const fakeSearchApi = ({ available_filters, results }) => {
+const fakeSearchApi = ({ available_filters, results, filters }) => {
 	try {
-		const categories = getCategory(available_filters);
+		const categories = getCategory(available_filters, filters);
 		const items = getDataItems(results);
 		return {
 			author: {
@@ -30,11 +30,16 @@ const fakeSearchApi = ({ available_filters, results }) => {
 	}
 };
 
-const getCategory = (filters) => {
+const getCategory = (available_filters, filters) => {
 	try {
-		const categories = filters.filter(
+		let categories = null;
+		categories = available_filters.filter(
 			(filter) => filter.id === "category"
 		)[0];
+		if (!categories)
+			categories = filters.filter(
+				(filter) => filter.id === "category"
+			)[0];
 		const category = categories.values.reduce((acum, category) => {
 			acum = !acum.results ? category : acum;
 			acum = acum.results > category.results ? acum : category;
@@ -60,6 +65,7 @@ const getDataItems = (items) => {
 				picture: item.thumbnail,
 				condition: item.condition,
 				free_shipping: item.shipping.free_shipping,
+				state: item.address.state_name,
 			};
 		});
 	} catch (error) {

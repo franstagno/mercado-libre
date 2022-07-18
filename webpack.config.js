@@ -9,7 +9,7 @@ module.exports = {
 		historyApiFallback: true,
 	},
 	entry: {
-		home: path.join(__dirname, "src/views/App.js"),
+		home: path.join(__dirname, "src/App.js"),
 	},
 	output: {
 		filename: "[name].bundle.js",
