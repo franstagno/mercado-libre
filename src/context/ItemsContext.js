@@ -1,6 +1,5 @@
 import React, { useState, useEffect, createContext } from "react";
 import { fetchItems, fetchItem, getParamsFromUrl } from "./Utils";
-import { useParams } from "react-router-dom";
 
 const ItemsContext = createContext(null);
 
@@ -10,10 +9,9 @@ export const ItemsProvider = ({ children }) => {
 	const [search, setSearch] = useState(null);
 	const [producId, setProductId] = useState(null);
 	const urlParams = getParamsFromUrl();
-	const { id } = useParams();
 
 	const getItem = async () => {
-		const item = await fetchItem(search);
+		const item = await fetchItem(producId);
 		setItem(item);
 	};
 
@@ -24,7 +22,6 @@ export const ItemsProvider = ({ children }) => {
 
 	useEffect(() => {
 		const search = urlParams.get("search");
-		if (id) setProductId(id);
 		if (search) setSearch(search);
 	}, []);
 
@@ -39,7 +36,7 @@ export const ItemsProvider = ({ children }) => {
 	}, [producId]);
 
 	return (
-		<ItemsContext.Provider value={{ results, item }}>
+		<ItemsContext.Provider value={{ results, item, search, setProductId }}>
 			{children}
 		</ItemsContext.Provider>
 	);

@@ -6,7 +6,9 @@ const Header = () => {
 	return (
 		<Wrapper>
 			<Block>
-				<Logo src="logo.png"></Logo>
+				<a href="/">
+					<Logo src="/logo.png"></Logo>
+				</a>
 				<Search></Search>
 			</Block>
 		</Wrapper>
